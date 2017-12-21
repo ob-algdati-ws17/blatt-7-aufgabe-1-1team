@@ -5,7 +5,7 @@
 #include "gmock/gmock.h"
 #include "avlTree/avlTree.h"
 
-class ListTest : public ::testing::Test {
+class avlTreeTest : public ::testing::Test {
 };
 
 #endif //ARRAYLIST_TESTLIST_H
