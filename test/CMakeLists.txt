@@ -5,13 +5,13 @@ if (APPLE)
     add_definitions(-D__GLIBCXX__)
 endif (APPLE)
 
-add_executable(testAlvTree ${SRCS} ../test/testAlvTree.h)
+add_executable(testAvlTree ${SRCS} testAvlTree.h)
 
-target_link_libraries(testAlvTree
+target_link_libraries(testAvlTree
         gtest
         gmock
 )
 
 include_directories("..")
 
-install(TARGETS testAlvTree DESTINATION bin)
+install(TARGETS testAvlTree DESTINATION bin)
