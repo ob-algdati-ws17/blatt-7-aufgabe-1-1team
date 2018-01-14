@@ -8,21 +8,21 @@
 #include <cstdio>
 
 using namespace std;
-//-----Destruct Tree------//
 
+//-----Destructor------//
 avlTree::~avlTree() {
     delete firstNode;
 }
 
 //-----Node Methoden------//
 
-avlTree::Node::Node(int key, Node* parent) : key(key),parent(parent) {
+/*avlTree::Node::Node(int key, Node* parent) : key(key),parent(parent) {
     this->right = nullptr;
     this->left  = nullptr;
 }
 
 avlTree::Node::Node(int key, Node* lastNode, Node* left, Node* right, int balance) : key(key),parent(lastNode),left(left), right(right), balance(balance) {
-}
+}*/
 //-----Destruct Node-----//
 avlTree::Node::~Node() {
     delete left;

@@ -10,7 +10,7 @@
 class avlTree {
 private:
     struct Node {
-        const int key;
+        int key;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *parent = nullptr;
