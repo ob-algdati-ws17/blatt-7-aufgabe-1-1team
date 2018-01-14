@@ -1,12 +1,11 @@
-/*#ifndef AVLTREE_H
-#define AVLTREE_H*/
+#ifndef AVLTREE_H
+#define AVLTREE_H
+
+#endif //AVLTREE_H
 
 #include <iostream>
 #include <string>
-
-/*avlTree &operator+=(tree &, const int k);
-
-avlTree &operator-=(tree &, const int k);*/
+#include <vector>
 
 class avlTree {
 private:
@@ -26,7 +25,7 @@ private:
         bool hasChild() const;
     };
 
-    Node *root = nullptr;
+    Node *firstNode = nullptr;
 
     Node* getSymmetricFollower(Node* node);
 
