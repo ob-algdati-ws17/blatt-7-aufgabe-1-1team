@@ -14,8 +14,8 @@ TEST (testAvlTree, Insert_Two) {
     avlTree tree;
     tree.insert(7);
     tree.insert(4);
+    EXPECT_TRUE(tree.search(7));
     EXPECT_TRUE(tree.search(4));
-    EXPECT_TRUE(tree.search(3));
 }
 
 TEST(testAvlTree, InOrder) {
@@ -118,9 +118,9 @@ TEST(testAvlTree, RemoveWithNodes) {
     tree.insert(3);
     tree.insert(2);
     tree.insert(4);
-    tree.remove(3);
-    EXPECT_FALSE(tree.search(3));
-    auto vector1 = new vector <int> {2,4};
+    tree.remove(2);
+    EXPECT_FALSE(tree.search(2));
+    auto vector1 = new vector <int> {3,4};
     EXPECT_TRUE(compareVectors(vector1,tree.inorder()));
 }
 

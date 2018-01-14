@@ -25,7 +25,7 @@ private:
         bool hasChild() const;
     };
 
-    Node *firstNode = nullptr;
+    Node *root = nullptr;
 
     Node* getSymmetricFollower(Node* node);
 
