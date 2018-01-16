@@ -194,7 +194,15 @@ void avlTree::rotateRight(Node* node) {
 
 //get Height for remove..
 int avlTree::getHeight(Node* p) {
-    return max(p->left == nullptr ? 0 : getHeight(p->left) + 1, p->right == nullptr ? 0 : getHeight(p->right) + 1);
+    int l = 0;
+    int r = 0;
+    if (p->left != nullptr) {
+        l = getHeight(p->left) + 1;
+    }
+    if (p->right != nullptr) {
+        r = getHeight(p->right) + 1;
+    }
+    return max(l, r);
 }
 
 //Einfügen von Neuen Knoten mit value
