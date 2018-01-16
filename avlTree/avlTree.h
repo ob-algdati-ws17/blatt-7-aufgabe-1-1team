@@ -36,7 +36,7 @@ private:
     int getHeight(Node* p);
 
     // Is tree in order?
-    std::vector<int> *inorder(Node* node,std::vector<int>* tree) const;
+    std::vector<int> *sortTree(Node *node, std::vector<int> *tree) const;
 
 public :
 
@@ -48,6 +48,6 @@ public :
     bool search(const int value) const;
     bool search(const int value, Node* node) const;
 
-    std::vector<int> *inorder() const;   // (symmetric order)
+    std::vector<int> *sortTree() const;   // (symmetric order)
 
 };

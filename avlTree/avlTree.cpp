@@ -24,15 +24,15 @@ bool avlTree::Node::hasChild() const {
     return left != nullptr || right != nullptr;
 }
 
-// Finde den kleinsten Key
+// find smallest Key
 avlTree::Node *avlTree::getSymmetricFollower(Node *node) {
-    auto current = node->left;
-    if(current != nullptr) {
-        while(current->right != nullptr) {
-            current = current->right;
+    auto smallest = node->left;
+    if(smallest != nullptr) {
+        while(smallest->right != nullptr) {
+            smallest = smallest->right;
         }
     }
-    return current;
+    return smallest;
 }
 
 //Balancing Method
@@ -153,9 +153,8 @@ void avlTree::upOut(Node* start){
     }
 }
 
-// rotate Methoden
 
-//------Rotate Linksherum------//
+// Rotate left
 void avlTree::rotateLeft(Node* node) {
     Node *rightside = node->right;
     Node *saveParent = node->parent;
@@ -174,31 +173,31 @@ void avlTree::rotateLeft(Node* node) {
     }
 }
 
-//------Rotate Rechtsherum-------//
+// Rotate right
 void avlTree::rotateRight(Node* node) {
     Node* leftside = node->left;
-    Node* saveParent = node->parent;
+    Node* tmpParent = node->parent;
     Node* t2 = node->left->right;
-    if (saveParent == nullptr) {
+    if (tmpParent == nullptr) {
         root = leftside;
         root->right = node;
         node->right = t2;
     } else {
         // Rotiere Rechts herum
-        saveParent->left = leftside;
-        saveParent->balance += 1;
+        tmpParent->left = leftside;
+        tmpParent->balance += 1;
         leftside->right = node;
         leftside->balance +=1;
         node->left = t2;
     }
 }
 
-//-----Bestimme Höhe für Remove------//
+//get Height for remove..
 int avlTree::getHeight(Node* p) {
     return max(p->left == nullptr ? 0 : getHeight(p->left) + 1, p->right == nullptr ? 0 : getHeight(p->right) + 1);
 }
 
-//-----Einfügen von Neuen Knoten mit value----//
+//Einfügen von Neuen Knoten mit value
 void avlTree::insert(const int value) {
     // Prüfe nach ob key schon existiert
     if (search(value)) {
@@ -237,31 +236,20 @@ void avlTree::insert(const int value) {
     }
 }
 
-//-------Search Methode ruft mit Root Rekursive Search auf----
+//Search Methode ruft mit Root Rekursive Search auf
 bool avlTree::search(const int value) const {
     search(value,root);
 }
-//------Rekursive Search Methode-------
+//Rekursive Search Methode
 bool avlTree::search(const int value, Node *node) const {
-    // Wenn am Ende angekommen wird false hoch gegeben
-    if (node == nullptr) {
-        return false;
-        // Wenn value mit dem Knoten Key übereinstimmt return True
-    } else if (node->key == value) {
-        return true;
-        // Vergleiche Wert mit value
-        // Kleiner als value-->Fortfahren mit Linkem Knoten
-        // Größer als value-->Fortfahren mit Rechtem Knoten
-    } else if (value < node->key) {
-        return search(value,node->left);
-    } else if ( value > node->key) {
-        return search(value,node->right);
-    }
+
+    return (node == nullptr ? false : (node->key == value ? true : (value < node->key ? search(value, node->left) : search(value, node->right))));
+
 }
 
 
 
-//------Remove Methode----//
+//Remove Methode
 // Prüfe gleich am Anfang ob der Wert existiert, ansonsten rekursiver Remove Aufruf mit Wurzel
 void avlTree::remove(const int value) {
     if (!search(value)) {
@@ -270,27 +258,16 @@ void avlTree::remove(const int value) {
         remove(value,root);
     }
 }
-//-----Rekursive Remove Methode------//
+//Rekursive Remove Methode
 void avlTree::remove(const int value, Node *node) {
 
 
 
-
-    // Lösche einzigen Knoten: die Wurzel
-    if (node == root  ) {
-        if (!node->hasChild()) {
-            delete node;
-            root = nullptr;
-            return;
-        } else {
-            // Entferne Wurzel
-            Node* leftSide = node;
-        }
-    }
-    Node* parent1 = node->parent;
+    Node* tmpParent = node->parent;
     int q = 0;
     // Fall 1
     if (node->key == value) {
+
         if (!node->hasChild()) {
             if(node == root) {
                 root = nullptr;
@@ -338,7 +315,7 @@ void avlTree::remove(const int value, Node *node) {
             upOut(node->parent);
 
             // Fall 2 1 Knoten 1 Leaf
-        } else if (node->left || node->right == nullptr) {
+        } else if (node->left == nullptr|| node->right == nullptr) {
             if (node == root) {
                 root = root->left == nullptr ? root->right : root->left;
                 root->parent = nullptr;
@@ -347,25 +324,25 @@ void avlTree::remove(const int value, Node *node) {
             if (node->parent->left == node) {
                 // Links kein Blatt
                 if (node->left == nullptr) {
-                    parent1->left = node->right;
-                    parent1->balance += 1;
-                    parent1->left->right = nullptr;
+                    tmpParent->left = node->right;
+                    tmpParent->balance += 1;
+                    tmpParent->left->right = nullptr;
                 } else {
-                    parent1->left = node->left;
-                    parent1->balance -= 1;
-                    parent1->left->left = nullptr;
+                    tmpParent->left = node->left;
+                    tmpParent->balance -= 1;
+                    tmpParent->left->left = nullptr;
                 }
                 node->parent->left->parent = node->parent;
             } else {
                 // Rechts kein Blatt
                 if (node->left == nullptr) {
-                    parent1->right = node->right;
-                    parent1->balance += 1;
-                    parent1->right->right = nullptr;
+                    tmpParent->right = node->right;
+                    tmpParent->balance += 1;
+                    tmpParent->right->right = nullptr;
                 } else {
-                    parent1->right = node->left;
-                    parent1->balance -= 1;
-                    parent1->right->left = nullptr;
+                    tmpParent->right = node->left;
+                    tmpParent->balance -= 1;
+                    tmpParent->right->left = nullptr;
                 }
                 node->parent->right->parent = node->parent;
             }
@@ -379,7 +356,7 @@ void avlTree::remove(const int value, Node *node) {
             remove(value, symmetric);
         }
     } else {
-        // Hangel dich tiefer durch den Baum bis Links fertig geprüft wurde, dann weiter mit Rechtem Teilbaum
+        // Linke Seite prüfen dann rechte Seite
         if (node->left != nullptr) {
             remove(value, node->left);
         }
@@ -390,15 +367,15 @@ void avlTree::remove(const int value, Node *node) {
 
 }
 
-//-----Gib den Baum inOrder an
-std::vector<int> *avlTree::inorder() const {
+//return sorted tree
+std::vector<int> *avlTree::sortTree() const {
     // Brich ab wenn Leerer Baum
     if (root == nullptr) {
         return nullptr;
     } else {
         auto* tree = new std::vector<int>();
         // Rekursiver Aufruf
-        inorder(root,tree);
+        sortTree(root, tree);
         /* for(auto i = tree->begin(); i != tree->end(); i++)
              {
                  std::cout<<*i<<endl;
@@ -407,17 +384,17 @@ std::vector<int> *avlTree::inorder() const {
     }
 }
 
-std::vector<int> *avlTree::inorder(Node *node, std::vector<int> *tree) const {
+std::vector<int> *avlTree::sortTree(Node *node, std::vector<int> *tree) const {
     // Linke seite
     if (node->left != nullptr) {
         // Gehe zum Ende des linken Teilbaums
-        inorder(node->left, tree);
+        sortTree(node->left, tree);
     }
     // Füge niedrigsten Key in Vektor ein
     tree->push_back(node->key);
     // Rechte Seite zum Ende des Teilbaums
     if (node->right != nullptr) {
-        inorder(node->right,tree);
+        sortTree(node->right, tree);
     }
     return tree;
 }
